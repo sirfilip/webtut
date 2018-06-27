@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	"webtut/controller"
 )
 
 func main() {
@@ -13,9 +15,7 @@ func main() {
 		panic(err)
 	}
 	router := mux.NewRouter()
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		view.ExecuteTemplate(w, "index.html", nil)
-	})
+	router.Handle("/", controller.Home(view))
 	http.Handle("/", router)
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("public"))))
 	http.ListenAndServe(":3000", nil)
